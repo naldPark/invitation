@@ -32,7 +32,7 @@ export const Invitation = () => {
       content: {
         title: "재원 ❤️ 영익 결혼합니다",
         description: "저희의 첫 걸음에 소중한 분들을 초대합니다",
-        imageUrl: "https://1017.life/img.png",
+        imageUrl: "https://1017.life/preview_image.jpg",
         link: {
           mobileWebUrl: "https://1017.life",
           webUrl: "https://1017.life",

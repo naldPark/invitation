@@ -2,7 +2,7 @@ import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
 import "dayjs/locale/ko"
-import coverImage from "../../images/cover.jpg"
+import coverImage from "../../images/cover.webp"
 import { LazyDiv } from "../lazyDiv"
 
 dayjs.extend(utc)

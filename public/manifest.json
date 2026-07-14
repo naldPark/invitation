@@ -1,21 +1,10 @@
 {
-  "short_name": "재원 ❤️ 영익 결혼합니다.",
-  "name": "재원 ❤️ 영익 결혼합니다.",
+  "name": "JW & YI Wedding",
   "icons": [
     {
       "src": "favicon.ico",
       "sizes": "16x16",
       "type": "image/x-icon"
-    },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
     }
   ],
   "display": "standalone",

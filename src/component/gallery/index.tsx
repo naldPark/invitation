@@ -3,6 +3,7 @@ import ArrowLeft from "../../icons/angle-left-sm.svg?react"
 import { LazyDiv } from "../lazyDiv"
 import { Button } from "../button"
 import { useModal } from "../modal"
+import { PhotoViewer } from "./photoViewer"
 import image1 from "../../images/image1.webp"
 import image2 from "../../images/image2.webp"
 import image3 from "../../images/image3.webp"
@@ -71,6 +72,7 @@ type ClickMove = "left" | "right" | null
 export const Gallery = () => {
   const { openModal, closeModal } = useModal()
   const carouselRef = useRef<HTMLDivElement>({} as HTMLDivElement)
+  const [viewerIndex, setViewerIndex] = useState<number | null>(null)
 
   useEffect(() => {
     GALLERY_IMAGES.forEach((image) => {
@@ -253,6 +255,7 @@ export const Gallery = () => {
         move(slide, (slide + 1) % CAROUSEL_ITEMS.length)
       } else {
         setStatus("stationary")
+        setViewerIndex(slide)
       }
     } else if (status === "dragging") {
       dragEnd(slide, dragOptionRef.current, carouselRef.current.clientWidth)
@@ -407,9 +410,9 @@ export const Gallery = () => {
                       onClick={() => {
                         if (statusRef.current === "stationary") {
                           if (idx !== slideRef.current) {
-                            move(slideRef.current, idx)
+                            setSlide(idx)
                           }
-                          closeModal()
+                          setViewerIndex(idx)
                         }
                       }}
                     />
@@ -432,6 +435,12 @@ export const Gallery = () => {
       >
         사진 전체보기
       </Button>
+      {viewerIndex !== null && (
+        <PhotoViewer
+          src={GALLERY_IMAGES[viewerIndex]}
+          onClose={() => setViewerIndex(null)}
+        />
+      )}
     </LazyDiv>
   )
 }

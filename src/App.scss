@@ -89,7 +89,8 @@ body {
   overflow-y: auto;
   height: 100vh;
 
-  &.modal-open {
+  &.modal-open,
+  &.photo-viewer-open {
     overflow-y: hidden;
   }
 

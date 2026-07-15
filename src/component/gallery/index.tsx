@@ -439,6 +439,17 @@ export const Gallery = () => {
         <PhotoViewer
           src={GALLERY_IMAGES[viewerIndex]}
           onClose={() => setViewerIndex(null)}
+          onPrev={() => {
+            const next =
+              (viewerIndex + GALLERY_IMAGES.length - 1) % GALLERY_IMAGES.length
+            setViewerIndex(next)
+            setSlide(next)
+          }}
+          onNext={() => {
+            const next = (viewerIndex + 1) % GALLERY_IMAGES.length
+            setViewerIndex(next)
+            setSlide(next)
+          }}
         />
       )}
     </LazyDiv>

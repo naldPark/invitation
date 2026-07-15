@@ -9,10 +9,13 @@ import {
 const MIN_SCALE = 1
 const MAX_SCALE = 4
 const DOUBLE_TAP_MS = 280
+const SWIPE_THRESHOLD = 60
 
 type Props = {
   src: string
   onClose: () => void
+  onPrev: () => void
+  onNext: () => void
 }
 
 type Point = { x: number; y: number }
@@ -27,12 +30,14 @@ const midpoint = (a: Point, b: Point): Point => ({
 const clamp = (value: number, min: number, max: number) =>
   Math.min(max, Math.max(min, value))
 
-export const PhotoViewer = ({ src, onClose }: Props) => {
+export const PhotoViewer = ({ src, onClose, onPrev, onNext }: Props) => {
   const [scale, setScale] = useState(1)
   const [translate, setTranslate] = useState({ x: 0, y: 0 })
+  const [swipeX, setSwipeX] = useState(0)
 
   const scaleRef = useRef(1)
   const translateRef = useRef({ x: 0, y: 0 })
+  const swipeXRef = useRef(0)
   const pinchRef = useRef<{
     startDistance: number
     startScale: number
@@ -43,10 +48,16 @@ export const PhotoViewer = ({ src, onClose }: Props) => {
     startPoint: Point
     startTranslate: Point
     moved: boolean
+    axis: "horizontal" | "vertical" | null
   } | null>(null)
   const lastTapRef = useRef<{ time: number; point: Point } | null>(null)
   const singleTapTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const pinchedRef = useRef(false)
+  const onPrevRef = useRef(onPrev)
+  const onNextRef = useRef(onNext)
+
+  onPrevRef.current = onPrev
+  onNextRef.current = onNext
 
   const applyTransform = useCallback(
     (nextScale: number, nextTranslate: Point) => {
@@ -61,6 +72,16 @@ export const PhotoViewer = ({ src, onClose }: Props) => {
     },
     [],
   )
+
+  const resetView = useCallback(() => {
+    applyTransform(MIN_SCALE, { x: 0, y: 0 })
+    swipeXRef.current = 0
+    setSwipeX(0)
+  }, [applyTransform])
+
+  useEffect(() => {
+    resetView()
+  }, [src, resetView])
 
   useEffect(() => {
     document.body.classList.add("photo-viewer-open")
@@ -82,6 +103,8 @@ export const PhotoViewer = ({ src, onClose }: Props) => {
       clearSingleTapTimer()
       lastTapRef.current = null
       pinchedRef.current = true
+      swipeXRef.current = 0
+      setSwipeX(0)
       const a = { x: e.touches[0].clientX, y: e.touches[0].clientY }
       const b = { x: e.touches[1].clientX, y: e.touches[1].clientY }
       panRef.current = null
@@ -100,6 +123,7 @@ export const PhotoViewer = ({ src, onClose }: Props) => {
         startPoint: point,
         startTranslate: { ...translateRef.current },
         moved: false,
+        axis: null,
       }
       pinchedRef.current = false
 
@@ -158,6 +182,18 @@ export const PhotoViewer = ({ src, onClose }: Props) => {
           x: panRef.current.startTranslate.x + dx,
           y: panRef.current.startTranslate.y + dy,
         })
+        return
+      }
+
+      if (!panRef.current.axis && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+        panRef.current.axis =
+          Math.abs(dx) >= Math.abs(dy) ? "horizontal" : "vertical"
+      }
+
+      if (panRef.current.axis === "horizontal") {
+        e.preventDefault()
+        swipeXRef.current = dx
+        setSwipeX(dx)
       }
     }
   }
@@ -169,11 +205,28 @@ export const PhotoViewer = ({ src, onClose }: Props) => {
 
     if (e.touches.length === 0) {
       const wasMoved = panRef.current?.moved ?? false
+      const axis = panRef.current?.axis
+      const currentSwipeX = swipeXRef.current
       panRef.current = null
 
       if (scaleRef.current < 1.05) {
         applyTransform(MIN_SCALE, { x: 0, y: 0 })
       }
+
+      if (
+        scaleRef.current === MIN_SCALE &&
+        axis === "horizontal" &&
+        Math.abs(currentSwipeX) >= SWIPE_THRESHOLD
+      ) {
+        if (currentSwipeX < 0) onNextRef.current()
+        else onPrevRef.current()
+        swipeXRef.current = 0
+        setSwipeX(0)
+        return
+      }
+
+      swipeXRef.current = 0
+      setSwipeX(0)
 
       if (
         !wasMoved &&
@@ -209,7 +262,7 @@ export const PhotoViewer = ({ src, onClose }: Props) => {
           alt="갤러리 사진"
           draggable={false}
           style={{
-            transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`,
+            transform: `translate(${translate.x + swipeX}px, ${translate.y}px) scale(${scale})`,
           }}
         />
       </div>

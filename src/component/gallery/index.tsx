@@ -3,12 +3,46 @@ import ArrowLeft from "../../icons/angle-left-sm.svg?react"
 import { LazyDiv } from "../lazyDiv"
 import { Button } from "../button"
 import { useModal } from "../modal"
-import image1 from "../../images/image1.jpg"
-import image2 from "../../images/image2.jpg"
-import image3 from "../../images/image3.jpg"
-import image4 from "../../images/image4.jpg"
+import { PhotoViewer } from "./photoViewer"
+import image1 from "../../images/image1.webp"
+import image2 from "../../images/image2.webp"
+import image3 from "../../images/image3.webp"
+import image4 from "../../images/image4.webp"
+import image5 from "../../images/image5.webp"
+import image6 from "../../images/image6.webp"
+import image7 from "../../images/image7.webp"
+import image8 from "../../images/image8.webp"
+import image9 from "../../images/image9.webp"
+import image10 from "../../images/image10.webp"
+import image11 from "../../images/image11.webp"
+import image12 from "../../images/image12.webp"
+import image13 from "../../images/image13.webp"
+import image14 from "../../images/image14.webp"
+import image15 from "../../images/image15.webp"
+import image16 from "../../images/image16.webp"
+import image17 from "../../images/image17.webp"
+import image18 from "../../images/image18.webp"
 
-const GALLERY_IMAGES = [image1, image2, image3, image4]
+const GALLERY_IMAGES = [
+  image1,
+  image2,
+  image3,
+  image4,
+  image5,
+  image6,
+  image7,
+  image8,
+  image9,
+  image10,
+  image11,
+  image12,
+  image13,
+  image14,
+  image15,
+  image16,
+  image17,
+  image18,
+]
 
 const CAROUSEL_ITEMS = GALLERY_IMAGES.map((item, idx) => (
   <div className="carousel-item" key={idx}>
@@ -38,6 +72,7 @@ type ClickMove = "left" | "right" | null
 export const Gallery = () => {
   const { openModal, closeModal } = useModal()
   const carouselRef = useRef<HTMLDivElement>({} as HTMLDivElement)
+  const [viewerIndex, setViewerIndex] = useState<number | null>(null)
 
   useEffect(() => {
     GALLERY_IMAGES.forEach((image) => {
@@ -220,6 +255,7 @@ export const Gallery = () => {
         move(slide, (slide + 1) % CAROUSEL_ITEMS.length)
       } else {
         setStatus("stationary")
+        setViewerIndex(slide)
       }
     } else if (status === "dragging") {
       dragEnd(slide, dragOptionRef.current, carouselRef.current.clientWidth)
@@ -374,9 +410,9 @@ export const Gallery = () => {
                       onClick={() => {
                         if (statusRef.current === "stationary") {
                           if (idx !== slideRef.current) {
-                            move(slideRef.current, idx)
+                            setSlide(idx)
                           }
-                          closeModal()
+                          setViewerIndex(idx)
                         }
                       }}
                     />
@@ -399,6 +435,23 @@ export const Gallery = () => {
       >
         사진 전체보기
       </Button>
+      {viewerIndex !== null && (
+        <PhotoViewer
+          src={GALLERY_IMAGES[viewerIndex]}
+          onClose={() => setViewerIndex(null)}
+          onPrev={() => {
+            const next =
+              (viewerIndex + GALLERY_IMAGES.length - 1) % GALLERY_IMAGES.length
+            setViewerIndex(next)
+            setSlide(next)
+          }}
+          onNext={() => {
+            const next = (viewerIndex + 1) % GALLERY_IMAGES.length
+            setViewerIndex(next)
+            setSlide(next)
+          }}
+        />
+      )}
     </LazyDiv>
   )
 }

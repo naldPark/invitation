@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite';
-import react from '@viteplugin-react';
+import { defineConfig } from "vite"
+import react from "@vitejs/plugin-react"
 
 export default defineConfig({
   plugins: [react()],
-  base: '/', // 루트 도메인(1017.life) 사용 시 '/'로 설정
-});
+  base: "/",
+})

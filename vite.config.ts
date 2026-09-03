@@ -1,10 +1,7 @@
-import { defineConfig } from "vite"
-import react from "@vitejs/plugin-react"
-import svgr from "vite-plugin-svgr"
+import { defineConfig } from 'vite';
+import react from '@viteplugin-react';
 
 export default defineConfig({
-  plugins: [react(), svgr()],
-  server: { port: 3000 },
-  build: { outDir: "build" },
-  base: "/",
-})
+  plugins: [react()],
+  base: '/', // 루트 도메인(1017.life) 사용 시 '/'로 설정
+});

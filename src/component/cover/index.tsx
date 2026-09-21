@@ -4,6 +4,7 @@ import timezone from "dayjs/plugin/timezone"
 import "dayjs/locale/ko"
 import coverImage from "../../images/cover.webp"
 import { LazyDiv } from "../lazyDiv"
+import { CeremonyVideoButton } from "../ceremonyVideo"
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -25,6 +26,7 @@ const DAY_OF_WEEK = [
 export const Cover = () => {
   return (
     <LazyDiv className="card cover">
+      <CeremonyVideoButton />
       <div className="wedding-date">
         {WEDDING_DATE.format("YYYY")}
         <div className="divider" />

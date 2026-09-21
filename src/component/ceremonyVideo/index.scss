@@ -1,0 +1,58 @@
+@keyframes ceremony-video-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(194, 128, 128, 0.45),
+      0 0.2rem 0.7rem rgba(194, 128, 128, 0.25);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 0.45rem rgba(194, 128, 128, 0),
+      0 0.35rem 1.1rem rgba(194, 128, 128, 0.55);
+  }
+}
+
+.cover .ceremony-video {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2rem;
+  padding-bottom: 0.4rem;
+  overflow: visible;
+
+  .ceremony-video-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    text-decoration: none;
+    background-color: var(--white-color);
+    border: solid 0.05rem var(--alt-color);
+    color: var(--alt-color);
+    font-weight: 800;
+    border-radius: 0.3rem;
+    padding: 0.55rem 1.35rem;
+    position: relative;
+    z-index: 3;
+    animation: ceremony-video-glow 0.9s ease-in-out infinite;
+
+    .play-icon {
+      width: 1.05rem;
+      height: 1.05rem;
+      color: var(--alt-color);
+      flex-shrink: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover .ceremony-video .ceremony-video-link {
+    animation: none;
+    box-shadow: 0 0.2rem 0.7rem rgba(194, 128, 128, 0.35);
+  }
+}
+
+.cover:has(.ceremony-video) .wedding-date {
+  margin-top: 1.2rem;
+}

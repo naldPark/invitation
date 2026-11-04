@@ -56,22 +56,22 @@
 
   .photo-download {
     position: absolute;
-    top: 0.65rem;
-    right: 0.65rem;
+    top: 0.4rem;
+    right: 0.4rem;
     z-index: 2;
-    width: 2.55rem;
-    height: 2.55rem;
+    width: 1.65rem;
+    height: 1.65rem;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.94);
-    box-shadow: 0 0.12rem 0.45rem rgba(40, 44, 52, 0.22);
+    box-shadow: 0 0.08rem 0.28rem rgba(40, 44, 52, 0.22);
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--alt-color);
 
     svg {
-      width: 1.25rem;
-      height: 1.25rem;
+      width: 0.82rem;
+      height: 0.82rem;
       display: block;
     }
 

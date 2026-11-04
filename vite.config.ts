@@ -5,4 +5,10 @@ import svgr from "vite-plugin-svgr"
 export default defineConfig({
   plugins: [react(), svgr()],
   base: "/",
+  server: {
+    watch: {
+      usePolling: true,
+      interval: 1000,
+    },
+  },
 })

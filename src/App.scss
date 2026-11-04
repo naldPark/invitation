@@ -83,7 +83,8 @@ body {
   overflow-y: auto;
   height: 100vh;
 
-  &.photo-viewer-open {
+  &.photo-viewer-open,
+  &.ceremony-video-open {
     overflow-y: hidden;
   }
 

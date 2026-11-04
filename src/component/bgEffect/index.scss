@@ -1,0 +1,16 @@
+.bg-effect {
+  @media print {
+    display: none;
+  }
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  z-index: 2;
+  /* 1️⃣ 기존대로 버튼 위에 보이게 유지 */
+  pointer-events: none;
+  /* 2️⃣ ⭐ 핵심: 대신 유령처럼 클릭만 통과시킴 */
+}

@@ -1,0 +1,13 @@
+{
+  "name": "재원 ♥ 영익",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "display": "standalone",
+  "theme_color": "#f9f9f9",
+  "background_color": "#ffe7e7"
+}

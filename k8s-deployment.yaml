@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: invitation-1017
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: invitation-1017
+  template:
+    metadata:
+      labels:
+        app: invitation-1017
+    spec:
+      containers:
+        - name: invitation-1017
+          image: nas.nald.me:35003/docker/temp/invitation:__DOCKER_IMG_VER__
+          ports:
+            - containerPort: 80
+              protocol: TCP
+      imagePullSecrets:
+        - name: regcred
+        - name: regcred-dns

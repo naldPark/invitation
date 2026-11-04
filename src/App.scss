@@ -1,0 +1,159 @@
+@use "./component/cover";
+@use "./component/bgEffect";
+@use "./component/gallery";
+@use "./component/ceremonyVideo";
+
+:root {
+  --theme-color: #ff8585;
+  --theme-bg-color: #ffe7e7;
+  --alt-color: #c28080;
+  --alt-bg-color: #f4f0f0;
+  --dark-color: #282c34;
+  --dark-grey-color: #d2d2d2;
+  --light-grey-color: #eaeaea;
+  --light-color: #f9f9f9;
+  --white-color: #ffffff;
+  --red-color: #ff0000;
+
+  font-family: "MapoGoldenPier";
+  font-size: 20px;
+
+  @media (max-width: 500px) {
+    font-size: 4vw;
+  }
+}
+
+@media print {
+  body {
+    print-color-adjust: exact;
+  }
+}
+
+$colors: (
+  theme-color: var(--theme-color),
+  theme-bg-color: var(--theme-bg-color),
+  alt-color: var(--alt-color),
+  alt-bg-color: var(--alt-bg-color),
+  dark-color: var(--dark-color),
+  dark-grey-color: var(--dark-grey-color),
+  light-grey-color: var(--light-grey-color),
+  light-color: var(--light-color),
+  white-color: var(--white-color),
+  red-color: var(--red-color),
+);
+
+@each $name, $color in $colors {
+  .text-#{$name} {
+    color: $color !important;
+  }
+
+  .bg-#{$name} {
+    background-color: $color !important;
+  }
+
+  .border-#{$name} {
+    border-color: $color !important;
+  }
+}
+
+@keyframes lazy-fade-in {
+  from {
+    opacity: 0;
+    z-index: 3;
+    transform: translateY(2rem);
+  }
+
+  to {
+    opacity: 1;
+    z-index: 3;
+    transform: translateY(0);
+  }
+}
+
+button {
+  font-family: "MapoGoldenPier";
+  font-size: 1rem;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100vh;
+
+  &.photo-viewer-open {
+    overflow-y: hidden;
+  }
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  color: var(--dark-color);
+  user-select: none;
+}
+
+.background {
+  background-color: var(--theme-bg-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  min-width: 100vw;
+
+  .card-view {
+    width: 100%;
+    max-width: 480px;
+    text-align: center;
+    padding-bottom: 1.2rem;
+
+    .card {
+      background-color: var(--light-color);
+      padding: 1rem;
+      border: 1px solid var(--light-grey-color);
+      box-shadow: 0 0 0.5rem 0 rgba(0, 0, 0, 0.2);
+      margin: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      opacity: 0;
+
+      &.lazy-active {
+        animation-name: lazy-fade-in;
+        animation-duration: 1.4s;
+        opacity: 1;
+      }
+
+      @media print {
+        opacity: 1;
+        animation-name: inherit !important;
+        animation-duration: inherit !important;
+      }
+    }
+
+    .card.album {
+      padding: 1rem 0 0.55rem;
+    }
+  }
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: var(--theme-color);
+  font-weight: normal;
+
+  &.english {
+    font-family: "Allura";
+  }
+}
+
+div.break {
+  height: 1rem;
+}

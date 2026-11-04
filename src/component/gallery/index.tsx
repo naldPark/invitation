@@ -47,6 +47,8 @@ async function downloadPhoto(src: string, filename: string) {
 export const Gallery = () => {
   const gridRef = useRef<HTMLDivElement>(null)
   const [viewerIndex, setViewerIndex] = useState<number | null>(null)
+  const viewerIndexRef = useRef<number | null>(null)
+  const viewerHistoryRef = useRef(false)
   const [downloading, setDownloading] = useState<string | null>(null)
   const [loaded, setLoaded] = useState<Set<number>>(
     () =>
@@ -57,6 +59,33 @@ export const Gallery = () => {
         ),
       ),
   )
+
+  useEffect(() => {
+    const onPopState = () => {
+      if (viewerIndexRef.current === null) return
+      viewerIndexRef.current = null
+      viewerHistoryRef.current = false
+      setViewerIndex(null)
+    }
+    window.addEventListener("popstate", onPopState)
+    return () => window.removeEventListener("popstate", onPopState)
+  }, [])
+
+  const openViewer = (index: number) => {
+    viewerIndexRef.current = index
+    setViewerIndex(index)
+    if (viewerHistoryRef.current) return
+    window.history.pushState({ photoViewer: true }, "")
+    viewerHistoryRef.current = true
+  }
+
+  const closeViewer = () => {
+    viewerIndexRef.current = null
+    setViewerIndex(null)
+    if (!viewerHistoryRef.current) return
+    viewerHistoryRef.current = false
+    window.history.back()
+  }
 
   useEffect(() => {
     const root = gridRef.current
@@ -125,7 +154,7 @@ export const Gallery = () => {
                   type="button"
                   className="photo-open"
                   aria-label={`사진 ${index + 1} 크게 보기`}
-                  onClick={() => setViewerIndex(index)}
+                  onClick={() => openViewer(index)}
                 >
                   {loaded.has(index) && (
                     <img
@@ -166,7 +195,7 @@ export const Gallery = () => {
           src={photos[viewerIndex].src}
           index={viewerIndex}
           total={photos.length}
-          onClose={() => setViewerIndex(null)}
+          onClose={closeViewer}
           onPrev={() =>
             setViewerIndex((current) =>
               current === null || current <= 0 ? current : current - 1,
